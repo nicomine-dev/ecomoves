@@ -4,37 +4,56 @@ import { UserContext } from "../context/userContext";
 import "../styles/Movements.styles.css";
 
 export const Movements = () => {
-  let { movements } = useContext(UserContext);
+  const { movements } = useContext(UserContext);
 
-  console.log(movements?.length);
+  const formatAmount = (amount) => {
+    return new Intl.NumberFormat("es-AR", {
+      minimumFractionDigits: 2,
+    }).format(amount);
+  };
+
+  const reversedMovements = movements ? [...movements].reverse() : [];
+
   return (
     <div className="movements-container">
-      <p className="title-name">Movimientos</p>
-      <p className="subtitle">Historial de transacciones</p>
-      <span className="divider" />
-      {movements?.length !== 0 ? (
-        movements
-          ?.map((movement) => (
-            <div className="movement animate__animated animate__slideInLeft">
-              <div className="container">
-                <p className="movement-name">{movement?.name}</p>
-                <p
-                  className={
-                    movement?.action === "-"
-                      ? "movement-amount consume-movement"
-                      : "movement-amount add-movement"
-                  }
-                >
-                  {movement?.action}
-                  {movement?.amount}
-                </p>
+      <div className="movements-header">
+        <p className="movements-title">
+          Movimientos
+          {movements?.length > 0 && (
+            <span className="movements-count">{movements.length}</span>
+          )}
+        </p>
+        <p className="movements-subtitle">Historial de transacciones</p>
+      </div>
+
+      <div className="movements-divider" />
+
+      {movements?.length > 0 ? (
+        <div className="movements-list">
+          {reversedMovements.map((movement, index) => (
+            <div
+              key={index}
+              className="movement-item animate__animated animate__fadeIn"
+              style={{ animationDuration: "0.25s" }}
+            >
+              <div className={`movement-icon ${movement.action === "+" ? "income-icon" : "expense-icon"}`}>
+                {movement.action === "+" ? "↑" : "↓"}
               </div>
-              <p className="date">{movement?.date}</p>
+              <div className="movement-info">
+                <p className="movement-name">{movement.name}</p>
+                <p className="movement-date">{movement.date}</p>
+              </div>
+              <span className={`movement-amount ${movement.action === "+" ? "income-amount" : "expense-amount"}`}>
+                {movement.action}${formatAmount(movement.amount)}
+              </span>
             </div>
-          ))
-          .toReversed()
+          ))}
+        </div>
       ) : (
-        <p className="subtitle empty">Aún no hay transacciones registradas!</p>
+        <div className="empty-state">
+          <span className="empty-icon">📊</span>
+          <p className="empty-text">Aún no hay transacciones registradas</p>
+        </div>
       )}
     </div>
   );

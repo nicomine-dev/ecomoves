@@ -3,8 +3,8 @@ import { UserContext } from "../context/userContext";
 import "../styles/ActionCard.styles.css";
 
 export const ActionCard = () => {
-  const [amount, setAmount] = useState();
-  const [movementName, setMovementName] = useState();
+  const [amount, setAmount] = useState("");
+  const [movementName, setMovementName] = useState("");
 
   const { setBalance, setMovements, balance, moneyHistory, setMoneyHistory } =
     useContext(UserContext);
@@ -14,9 +14,7 @@ export const ActionCard = () => {
   const handleBalance = (amountF, increment) => {
     parseFloat(amountF);
     if (amountF <= 0) return;
-    if (movementName.length < 1) return;
-
-    console.log(typeof amountF);
+    if (!movementName || movementName.length < 1) return;
 
     let action = increment ? "+" : "-";
 
@@ -28,7 +26,6 @@ export const ActionCard = () => {
         consume: moneyHistory.consume,
       };
       setMoneyHistory(totalMoneyIncome);
-
       localStorage.setItem("moneyHistory", JSON.stringify(totalMoneyIncome));
     } else {
       setBalance((prevState) => prevState - amountF);
@@ -70,44 +67,46 @@ export const ActionCard = () => {
     setMovementName("");
   };
 
-  console.log("ACA", moneyHistory);
-
   return (
     <div className="action-card-container">
-      <p className="title-name">añadir movimientos</p>
-      <p className="subtitle">Registrar tus ingresos y gastos</p>
-      <div className="input-container">
-        <div>
-          <h4 className="subtitle">Movimiento</h4>
+      <p className="action-title">Añadir movimiento</p>
+      <p className="action-subtitle">Registrá tus ingresos y gastos</p>
+
+      <div className="input-group">
+        <div className="field-wrapper">
+          <label className="field-label">Movimiento</label>
           <input
+            className="field-input"
             onChange={(e) => setMovementName(e.target.value)}
             placeholder="Nombre del movimiento"
-            type="string"
+            type="text"
             value={movementName}
           />
         </div>
-        <div>
-          <h4 className="subtitle">Monto</h4>
+        <div className="field-wrapper">
+          <label className="field-label">Monto</label>
           <input
+            className="field-input"
             onChange={(e) => setAmount(Number(e.target.value))}
-            placeholder="Cantidad de dinero"
+            placeholder="0.00"
             type="number"
             value={amount}
           />
         </div>
       </div>
-      <div className="button-container">
+
+      <div className="action-buttons">
         <button
-          className="button-add"
+          className="btn btn-income"
           onClick={() => handleBalance(amount, true)}
         >
-          +
+          ↑ Ingreso
         </button>
         <button
-          className="button-decrease"
+          className="btn btn-expense"
           onClick={() => handleBalance(amount, false)}
         >
-          -
+          ↓ Gasto
         </button>
       </div>
     </div>

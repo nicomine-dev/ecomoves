@@ -12,27 +12,40 @@ export const Profile = () => {
     }).format(number);
   };
 
+  const initial = name?.charAt(0)?.toUpperCase() || "U";
+
   return (
     <div className="profile-container">
-      <h1 className="title-name">{name}</h1>
-      <div className="balance-container">
-        <p className="subtitle">Balance actual </p>
-        <p className="money-amount">${formatNumber(balance)}</p>
-      </div>
-      <p className="subtitle">Resumen Financiero</p>
-      <div className="money-history-container">
-        <div className="history-item earn">
-          <p className="subtitle">ingresos</p>
-          <p>
-            ${moneyHistory?.income > 0 ? formatNumber(moneyHistory?.income) : 0}
-          </p>
+      <div className="profile-header">
+        <div className="profile-avatar">{initial}</div>
+        <div className="profile-info">
+          <p className="profile-name">{name}</p>
+          <p className="profile-label">Mi cuenta</p>
         </div>
-        <div className="history-item consume">
-          <p className="subtitle">Gastos</p>
-          <p>
-            $
-            {moneyHistory?.consume > 0 ? formatNumber(moneyHistory?.consume) : 0}
-          </p>
+      </div>
+
+      <div className="balance-section">
+        <p className="balance-label">Balance actual</p>
+        <p className={`balance-amount ${balance < 0 ? "negative" : ""}`}>
+          ${formatNumber(balance)}
+        </p>
+      </div>
+
+      <p className="stats-label">Resumen financiero</p>
+      <div className="stats-grid">
+        <div className="stat-item income">
+          <span className="stat-icon">↑</span>
+          <span className="stat-label">Ingresos</span>
+          <span className="stat-amount">
+            ${moneyHistory?.income > 0 ? formatNumber(moneyHistory.income) : "0"}
+          </span>
+        </div>
+        <div className="stat-item expense">
+          <span className="stat-icon">↓</span>
+          <span className="stat-label">Gastos</span>
+          <span className="stat-amount">
+            ${moneyHistory?.consume > 0 ? formatNumber(moneyHistory.consume) : "0"}
+          </span>
         </div>
       </div>
     </div>

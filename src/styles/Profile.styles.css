@@ -1,75 +1,156 @@
 .profile-container {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
-
-  align-items: start;
-  justify-content: start;
-
-  background-color: #fdfdfd;
-  box-shadow: 0px 0px 5px 0px rgba(209, 206, 206, 0.75);
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(209, 206, 206, 0.75);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(209, 206, 206, 0.75);
-  margin: 15px;
-
-min-height: 20rem;
-  height: fit-content;
-  width: 20%;
-  max-width: 30rem;
-  border-radius: 15px;
-  padding: 0 15px 30px 15px;
-
-  text-transform: capitalize;
+  position: relative;
+  overflow: hidden;
 }
 
 .profile-container::before {
-  content: "";
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-.balance-container {
+.profile-header {
   display: flex;
-  flex-direction: column;
-
-  font-size: 1.1rem;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
-.money-amount {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0 0 20px 0;
-  letter-spacing: 2px;
-}
-
-.money-history-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-items: center;
-
-  width: 100%;
-}
-
-.history-item {
+.profile-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 0 24px rgba(99, 102, 241, 0.35);
+  letter-spacing: -0.5px;
+}
 
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  width: 50%;
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  text-transform: capitalize;
+  letter-spacing: -0.3px;
+}
+
+.profile-label {
+  font-size: 0.7rem;
+  color: #475569;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.balance-section {
+  margin-bottom: 20px;
   padding: 20px;
+  background: rgba(99, 102, 241, 0.07);
+  border-radius: 16px;
+  border: 1px solid rgba(99, 102, 241, 0.14);
 }
 
-.earn {
-  background-color: rgba(150, 250, 150, 0.199);
+.balance-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
-.consume {
-  background-color: rgba(255, 142, 142, 0.199);
+.balance-amount {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1;
+  color: #f1f5f9;
+}
+
+.balance-amount.negative {
+  color: #f43f5e;
+}
+
+.stats-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #475569;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-item {
+  padding: 16px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-item.income {
+  background: rgba(16, 185, 129, 0.07);
+  border: 1px solid rgba(16, 185, 129, 0.14);
+}
+
+.stat-item.expense {
+  background: rgba(244, 63, 94, 0.07);
+  border: 1px solid rgba(244, 63, 94, 0.14);
+}
+
+.stat-icon {
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 700;
+}
+
+.stat-item.income .stat-label {
+  color: #10b981;
+}
+
+.stat-item.expense .stat-label {
+  color: #f43f5e;
+}
+
+.stat-amount {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #e2e8f0;
 }

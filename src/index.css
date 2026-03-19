@@ -1,14 +1,31 @@
-body {
-  background: #2a7b9b;
-  background: #2a7b9b;
-  background: linear-gradient(
-    222deg,
-    rgba(42, 123, 155, 1) 0%,
-    #c6d8db 50%,
-    #f3f8f8 100%
-  );
-  width: 100vw;
-  height: 100vh;
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
- color: #1f282d;
+  padding: 0;
+}
+
+body {
+  background: linear-gradient(135deg, #080c14 0%, #0f1624 40%, #141e35 100%);
+  min-height: 100vh;
+  width: 100%;
+  color: #e2e8f0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }

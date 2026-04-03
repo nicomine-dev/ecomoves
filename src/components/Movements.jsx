@@ -12,7 +12,8 @@ export const Movements = () => {
     }).format(amount);
   };
 
-  const reversedMovements = movements ? [...movements].reverse() : [];
+  // Backend already returns movements ordered by created_at desc
+  const reversedMovements = movements || [];
 
   return (
     <div className="movements-container">

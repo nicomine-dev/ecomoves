@@ -1,70 +1,45 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../context/userContext";
+import { api } from "../services/api";
 import "../styles/ActionCard.styles.css";
 
 export const ActionCard = () => {
   const [amount, setAmount] = useState("");
   const [movementName, setMovementName] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const { setBalance, setMovements, balance, moneyHistory, setMoneyHistory } =
+  const { setBalance, setMovements, setMoneyHistory } =
     useContext(UserContext);
 
-  const dateString = new Date();
-
-  const handleBalance = (amountF, increment) => {
-    parseFloat(amountF);
-    if (amountF <= 0) return;
+  const handleBalance = async (amountF, increment) => {
+    const numAmount = parseFloat(amountF);
+    if (!numAmount || numAmount <= 0) return;
     if (!movementName || movementName.length < 1) return;
 
-    let action = increment ? "+" : "-";
+    const action = increment ? "+" : "-";
 
-    if (increment) {
-      setBalance((prevState) => prevState + amountF);
-      localStorage.setItem("balance", balance + amountF);
-      let totalMoneyIncome = {
-        income: moneyHistory.income + amountF,
-        consume: moneyHistory.consume,
-      };
-      setMoneyHistory(totalMoneyIncome);
-      localStorage.setItem("moneyHistory", JSON.stringify(totalMoneyIncome));
-    } else {
-      setBalance((prevState) => prevState - amountF);
-      localStorage.setItem("balance", balance - amountF);
-      let totalMoneyConsume = {
-        income: moneyHistory.income,
-        consume: moneyHistory.consume + amountF,
-      };
-      setMoneyHistory(totalMoneyConsume);
-      localStorage.setItem("moneyHistory", JSON.stringify(totalMoneyConsume));
+    setSubmitting(true);
+    try {
+      const { movement, balance: newBalance } = await api.movements.create(
+        movementName,
+        numAmount,
+        action
+      );
+
+      setBalance(newBalance);
+      setMovements((prev) => [movement, ...prev]);
+      setMoneyHistory((prev) => ({
+        income: increment ? prev.income + numAmount : prev.income,
+        consume: !increment ? prev.consume + numAmount : prev.consume,
+      }));
+
+      setAmount("");
+      setMovementName("");
+    } catch (err) {
+      console.error("Error creating movement:", err);
+    } finally {
+      setSubmitting(false);
     }
-
-    setMovements((prevState) => [
-      ...prevState,
-      {
-        name: movementName,
-        amount: amount,
-        action: action,
-        date: dateString.toLocaleDateString(),
-      },
-    ]);
-
-    const stored = JSON.parse(localStorage.getItem("movements") || "[]");
-
-    localStorage.setItem(
-      "movements",
-      JSON.stringify([
-        ...stored,
-        {
-          name: movementName,
-          amount: amount,
-          action: action,
-          date: dateString.toLocaleDateString(),
-        },
-      ])
-    );
-
-    setAmount("");
-    setMovementName("");
   };
 
   return (
@@ -81,6 +56,7 @@ export const ActionCard = () => {
             placeholder="Nombre del movimiento"
             type="text"
             value={movementName}
+            disabled={submitting}
           />
         </div>
         <div className="field-wrapper">
@@ -91,6 +67,7 @@ export const ActionCard = () => {
             placeholder="0.00"
             type="number"
             value={amount}
+            disabled={submitting}
           />
         </div>
       </div>
@@ -99,12 +76,14 @@ export const ActionCard = () => {
         <button
           className="btn btn-income"
           onClick={() => handleBalance(amount, true)}
+          disabled={submitting}
         >
           ↑ Ingreso
         </button>
         <button
           className="btn btn-expense"
           onClick={() => handleBalance(amount, false)}
+          disabled={submitting}
         >
           ↓ Gasto
         </button>

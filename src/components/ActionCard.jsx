@@ -63,7 +63,7 @@ export const ActionCard = () => {
           <label className="field-label">Monto</label>
           <input
             className="field-input"
-            onChange={(e) => setAmount(Number(e.target.value))}
+            onChange={(e) => setAmount(e.target.value)}
             placeholder="0.00"
             type="number"
             value={amount}

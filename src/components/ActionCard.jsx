@@ -63,9 +63,15 @@ export const ActionCard = () => {
           <label className="field-label">Monto</label>
           <input
             className="field-input"
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "" || /^\d*\.?\d*$/.test(val)) {
+                setAmount(val);
+              }
+            }}
             placeholder="0.00"
-            type="number"
+            type="text"
+            inputMode="decimal"
             value={amount}
             disabled={submitting}
           />
